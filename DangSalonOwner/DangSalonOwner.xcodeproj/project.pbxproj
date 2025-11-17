@@ -1,0 +1,654 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		42259AB82EC6ECD7001C0190 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 42259AB72EC6ECD7001C0190 /* FirebaseAuth */; };
+		42259ABA2EC6ECD7001C0190 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 42259AB92EC6ECD7001C0190 /* FirebaseCore */; };
+		42259ABC2EC6ECD7001C0190 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 42259ABB2EC6ECD7001C0190 /* FirebaseFirestore */; };
+		42259ABE2EC6ECD7001C0190 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 42259ABD2EC6ECD7001C0190 /* FirebaseMessaging */; };
+		42259AC02EC6ECD7001C0190 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 42259ABF2EC6ECD7001C0190 /* FirebaseStorage */; };
+		42259AC32EC6ED09001C0190 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 42259AC22EC6ED09001C0190 /* SnapKit */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		423B5BA32EB8CE2500EB5A47 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 423B5B842EB8CE2400EB5A47 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 423B5B8B2EB8CE2400EB5A47;
+			remoteInfo = DangSalonOwner;
+		};
+		423B5BAD2EB8CE2500EB5A47 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 423B5B842EB8CE2400EB5A47 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 423B5B8B2EB8CE2400EB5A47;
+			remoteInfo = DangSalonOwner;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		423B5B8C2EB8CE2400EB5A47 /* DangSalonOwner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DangSalonOwner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		423B5BA22EB8CE2500EB5A47 /* DangSalonOwnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DangSalonOwnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		423B5BAC2EB8CE2500EB5A47 /* DangSalonOwnerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DangSalonOwnerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		423B5BB42EB8CE2500EB5A47 /* Exceptions for "DangSalonOwner" folder in "DangSalonOwner" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 423B5B8B2EB8CE2400EB5A47 /* DangSalonOwner */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		421334D12EBF8F4E00E3F108 /* Cell */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		423B5B8E2EB8CE2400EB5A47 /* DangSalonOwner */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				423B5BB42EB8CE2500EB5A47 /* Exceptions for "DangSalonOwner" folder in "DangSalonOwner" target */,
+			);
+			path = DangSalonOwner;
+			sourceTree = "<group>";
+		};
+		423B5BA52EB8CE2500EB5A47 /* DangSalonOwnerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DangSalonOwnerTests;
+			sourceTree = "<group>";
+		};
+		423B5BAF2EB8CE2500EB5A47 /* DangSalonOwnerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DangSalonOwnerUITests;
+			sourceTree = "<group>";
+		};
+		423B5BDC2EB9F31800EB5A47 /* ViewController */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		423B5C7E2EBB482500EB5A47 /* Model */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Model;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		42259AB52EC6EC76001C0190 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42259ABE2EC6ECD7001C0190 /* FirebaseMessaging in Frameworks */,
+				42259ABA2EC6ECD7001C0190 /* FirebaseCore in Frameworks */,
+				42259AB82EC6ECD7001C0190 /* FirebaseAuth in Frameworks */,
+				42259AC32EC6ED09001C0190 /* SnapKit in Frameworks */,
+				42259AC02EC6ECD7001C0190 /* FirebaseStorage in Frameworks */,
+				42259ABC2EC6ECD7001C0190 /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		423B5B832EB8CE2400EB5A47 = {
+			isa = PBXGroup;
+			children = (
+				421334D12EBF8F4E00E3F108 /* Cell */,
+				423B5C7E2EBB482500EB5A47 /* Model */,
+				423B5BDC2EB9F31800EB5A47 /* ViewController */,
+				423B5B8E2EB8CE2400EB5A47 /* DangSalonOwner */,
+				423B5BA52EB8CE2500EB5A47 /* DangSalonOwnerTests */,
+				423B5BAF2EB8CE2500EB5A47 /* DangSalonOwnerUITests */,
+				423B5B8D2EB8CE2400EB5A47 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		423B5B8D2EB8CE2400EB5A47 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				423B5B8C2EB8CE2400EB5A47 /* DangSalonOwner.app */,
+				423B5BA22EB8CE2500EB5A47 /* DangSalonOwnerTests.xctest */,
+				423B5BAC2EB8CE2500EB5A47 /* DangSalonOwnerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		423B5B8B2EB8CE2400EB5A47 /* DangSalonOwner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 423B5BB52EB8CE2500EB5A47 /* Build configuration list for PBXNativeTarget "DangSalonOwner" */;
+			buildPhases = (
+				423B5B882EB8CE2400EB5A47 /* Sources */,
+				423B5B8A2EB8CE2400EB5A47 /* Resources */,
+				42259AB52EC6EC76001C0190 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				421334D12EBF8F4E00E3F108 /* Cell */,
+				423B5B8E2EB8CE2400EB5A47 /* DangSalonOwner */,
+				423B5BDC2EB9F31800EB5A47 /* ViewController */,
+				423B5C7E2EBB482500EB5A47 /* Model */,
+			);
+			name = DangSalonOwner;
+			productName = DangSalonOwner;
+			productReference = 423B5B8C2EB8CE2400EB5A47 /* DangSalonOwner.app */;
+			productType = "com.apple.product-type.application";
+		};
+		423B5BA12EB8CE2500EB5A47 /* DangSalonOwnerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 423B5BBA2EB8CE2500EB5A47 /* Build configuration list for PBXNativeTarget "DangSalonOwnerTests" */;
+			buildPhases = (
+				423B5B9E2EB8CE2500EB5A47 /* Sources */,
+				423B5BA02EB8CE2500EB5A47 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				423B5BA42EB8CE2500EB5A47 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				423B5BA52EB8CE2500EB5A47 /* DangSalonOwnerTests */,
+			);
+			name = DangSalonOwnerTests;
+			packageProductDependencies = (
+			);
+			productName = DangSalonOwnerTests;
+			productReference = 423B5BA22EB8CE2500EB5A47 /* DangSalonOwnerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		423B5BAB2EB8CE2500EB5A47 /* DangSalonOwnerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 423B5BBD2EB8CE2500EB5A47 /* Build configuration list for PBXNativeTarget "DangSalonOwnerUITests" */;
+			buildPhases = (
+				423B5BA82EB8CE2500EB5A47 /* Sources */,
+				423B5BAA2EB8CE2500EB5A47 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				423B5BAE2EB8CE2500EB5A47 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				423B5BAF2EB8CE2500EB5A47 /* DangSalonOwnerUITests */,
+			);
+			name = DangSalonOwnerUITests;
+			packageProductDependencies = (
+			);
+			productName = DangSalonOwnerUITests;
+			productReference = 423B5BAC2EB8CE2500EB5A47 /* DangSalonOwnerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		423B5B842EB8CE2400EB5A47 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					423B5B8B2EB8CE2400EB5A47 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					423B5BA12EB8CE2500EB5A47 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 423B5B8B2EB8CE2400EB5A47;
+					};
+					423B5BAB2EB8CE2500EB5A47 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 423B5B8B2EB8CE2400EB5A47;
+					};
+				};
+			};
+			buildConfigurationList = 423B5B872EB8CE2400EB5A47 /* Build configuration list for PBXProject "DangSalonOwner" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 423B5B832EB8CE2400EB5A47;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				42259AB62EC6ECD7001C0190 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				42259AC12EC6ED09001C0190 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 423B5B8D2EB8CE2400EB5A47 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				423B5B8B2EB8CE2400EB5A47 /* DangSalonOwner */,
+				423B5BA12EB8CE2500EB5A47 /* DangSalonOwnerTests */,
+				423B5BAB2EB8CE2500EB5A47 /* DangSalonOwnerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		423B5B8A2EB8CE2400EB5A47 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		423B5BA02EB8CE2500EB5A47 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		423B5BAA2EB8CE2500EB5A47 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		423B5B882EB8CE2400EB5A47 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		423B5B9E2EB8CE2500EB5A47 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		423B5BA82EB8CE2500EB5A47 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		423B5BA42EB8CE2500EB5A47 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 423B5B8B2EB8CE2400EB5A47 /* DangSalonOwner */;
+			targetProxy = 423B5BA32EB8CE2500EB5A47 /* PBXContainerItemProxy */;
+		};
+		423B5BAE2EB8CE2500EB5A47 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 423B5B8B2EB8CE2400EB5A47 /* DangSalonOwner */;
+			targetProxy = 423B5BAD2EB8CE2500EB5A47 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		423B5BB62EB8CE2500EB5A47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5PZ4NS352;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DangSalonOwner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "댕살롱 사장님";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cyg.DangSalonOwner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		423B5BB72EB8CE2500EB5A47 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5PZ4NS352;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DangSalonOwner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "댕살롱 사장님";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cyg.DangSalonOwner;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		423B5BB82EB8CE2500EB5A47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = N5PZ4NS352;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		423B5BB92EB8CE2500EB5A47 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = N5PZ4NS352;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		423B5BBB2EB8CE2500EB5A47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5PZ4NS352;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cyg.DangSalonOwnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DangSalonOwner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DangSalonOwner";
+			};
+			name = Debug;
+		};
+		423B5BBC2EB8CE2500EB5A47 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5PZ4NS352;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cyg.DangSalonOwnerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DangSalonOwner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DangSalonOwner";
+			};
+			name = Release;
+		};
+		423B5BBE2EB8CE2500EB5A47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5PZ4NS352;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cyg.DangSalonOwnerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DangSalonOwner;
+			};
+			name = Debug;
+		};
+		423B5BBF2EB8CE2500EB5A47 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = N5PZ4NS352;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cyg.DangSalonOwnerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DangSalonOwner;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		423B5B872EB8CE2400EB5A47 /* Build configuration list for PBXProject "DangSalonOwner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				423B5BB82EB8CE2500EB5A47 /* Debug */,
+				423B5BB92EB8CE2500EB5A47 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		423B5BB52EB8CE2500EB5A47 /* Build configuration list for PBXNativeTarget "DangSalonOwner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				423B5BB62EB8CE2500EB5A47 /* Debug */,
+				423B5BB72EB8CE2500EB5A47 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		423B5BBA2EB8CE2500EB5A47 /* Build configuration list for PBXNativeTarget "DangSalonOwnerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				423B5BBB2EB8CE2500EB5A47 /* Debug */,
+				423B5BBC2EB8CE2500EB5A47 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		423B5BBD2EB8CE2500EB5A47 /* Build configuration list for PBXNativeTarget "DangSalonOwnerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				423B5BBE2EB8CE2500EB5A47 /* Debug */,
+				423B5BBF2EB8CE2500EB5A47 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		42259AB62EC6ECD7001C0190 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.6.0;
+			};
+		};
+		42259AC12EC6ED09001C0190 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		42259AB72EC6ECD7001C0190 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42259AB62EC6ECD7001C0190 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		42259AB92EC6ECD7001C0190 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42259AB62EC6ECD7001C0190 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		42259ABB2EC6ECD7001C0190 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42259AB62EC6ECD7001C0190 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		42259ABD2EC6ECD7001C0190 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42259AB62EC6ECD7001C0190 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		42259ABF2EC6ECD7001C0190 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42259AB62EC6ECD7001C0190 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		42259AC22EC6ED09001C0190 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 42259AC12EC6ED09001C0190 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 423B5B842EB8CE2400EB5A47 /* Project object */;
+}

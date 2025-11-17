@@ -1,0 +1,17 @@
+# Xcode
+DerivedData/
+xcuserdata/
+*.xcuserstate
+
+# Swift Package Manager
+.build/
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Firebase GoogleService
+GoogleService-Info.plist
+
+# Secret
+Secret.xcconfig
