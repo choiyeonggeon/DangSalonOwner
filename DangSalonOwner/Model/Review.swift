@@ -15,6 +15,7 @@ struct Review {
     let rating: Int
     let timestamp: Timestamp
     let reply: String?
+    let imageURLs: [String]
 
     init?(document: DocumentSnapshot) {
         let data = document.data() ?? [:]
@@ -32,5 +33,6 @@ struct Review {
         self.rating = rating
         self.timestamp = timestamp
         self.reply = data["reply"] as? String
+        self.imageURLs = data["imageURLs"] as? [String] ?? []
     }
 }

@@ -1,4 +1,3 @@
-//
 //  ReviewCell.swift
 //  DangSalonOwner
 //
@@ -13,6 +12,11 @@ final class ReviewCell: UITableViewCell {
     private let nameLabel = UILabel()
     private let ratingLabel = UILabel()
     private let reviewText = UILabel()
+    
+    // ⭐ 리뷰 이미지 표시용 ScrollView
+    private let imageScrollView = UIScrollView()
+    private var imageViews: [UIImageView] = []
+    
     private let replyTitleLabel = UILabel()
     private let replyBackground = UIView()
     private let replyTextView = UITextView()
@@ -32,10 +36,6 @@ final class ReviewCell: UITableViewCell {
         
         container.backgroundColor = .white
         container.layer.cornerRadius = 12
-        container.layer.shadowColor = UIColor.black.withAlphaComponent(0.1).cgColor
-        container.layer.shadowOpacity = 0.1
-        container.layer.shadowRadius = 4
-        container.layer.shadowOffset = CGSize(width: 0, height: 2)
         
         // 닉네임
         nameLabel.font = .boldSystemFont(ofSize: 16)
@@ -48,6 +48,9 @@ final class ReviewCell: UITableViewCell {
         reviewText.font = .systemFont(ofSize: 15)
         reviewText.numberOfLines = 0
         
+        // ⭐ 이미지 ScrollView 설정
+        imageScrollView.showsHorizontalScrollIndicator = false
+        
         // 사장님 답글
         replyTitleLabel.text = "사장님 답글"
         replyTitleLabel.font = .boldSystemFont(ofSize: 15)
@@ -57,26 +60,23 @@ final class ReviewCell: UITableViewCell {
         replyBackground.layer.cornerRadius = 10
         
         replyTextView.font = .systemFont(ofSize: 15)
-        replyTextView.textColor = .label
         replyTextView.backgroundColor = .clear
         replyTextView.isScrollEnabled = false
         replyTextView.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
         
-        // placeholder
         replyTextView.text = "답글을 입력해주세요."
         replyTextView.textColor = .systemGray3
         replyTextView.delegate = self
         
-        // 저장 버튼
         saveButton.setTitle("저장", for: .normal)
         saveButton.titleLabel?.font = .boldSystemFont(ofSize: 15)
         saveButton.addTarget(self, action: #selector(saveReply), for: .touchUpInside)
         
-        // 추가
         contentView.addSubview(container)
         [
             nameLabel, ratingLabel, reviewText,
-            replyTitleLabel, replyBackground, saveButton
+            imageScrollView, replyTitleLabel,
+            replyBackground, saveButton
         ].forEach { container.addSubview($0) }
         
         replyBackground.addSubview(replyTextView)
@@ -100,8 +100,14 @@ final class ReviewCell: UITableViewCell {
             $0.leading.trailing.equalToSuperview().inset(16)
         }
         
+        imageScrollView.snp.makeConstraints {
+            $0.top.equalTo(reviewText.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(80)   // 썸네일 높이
+        }
+        
         replyTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(reviewText.snp.bottom).offset(16)
+            $0.top.equalTo(imageScrollView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().inset(16)
         }
         
@@ -128,6 +134,9 @@ final class ReviewCell: UITableViewCell {
         ratingLabel.text = "⭐️ \(review.rating)"
         reviewText.text = review.content
         
+        // ⭐ 리뷰 이미지 표시
+        loadImages(urls: review.imageURLs)
+        
         // 답글 표시
         if let reply = review.reply, !reply.isEmpty {
             replyTextView.text = reply
@@ -140,7 +149,41 @@ final class ReviewCell: UITableViewCell {
         }
     }
     
-    // MARK: - 저장 버튼
+    // MARK: - 이미지 UI 생성
+    private func loadImages(urls: [String]) {
+        imageScrollView.subviews.forEach { $0.removeFromSuperview() }
+        imageViews.removeAll()
+        
+        var x: CGFloat = 0
+        
+        for urlString in urls {
+            let iv = UIImageView()
+            iv.frame = CGRect(x: x, y: 0, width: 80, height: 80)
+            iv.backgroundColor = .systemGray5
+            iv.layer.cornerRadius = 8
+            iv.clipsToBounds = true
+            iv.contentMode = .scaleAspectFill
+            
+            // 이미지 로드
+            if let url = URL(string: urlString) {
+                URLSession.shared.dataTask(with: url) { data, _, _ in
+                    if let data = data, let img = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            iv.image = img
+                        }
+                    }
+                }.resume()
+            }
+            
+            imageScrollView.addSubview(iv)
+            imageViews.append(iv)
+            
+            x += 90
+        }
+        
+        imageScrollView.contentSize = CGSize(width: x, height: 80)
+    }
+    
     @objc private func saveReply() {
         let text = replyTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty, text != "답글을 입력해주세요." else { return }
