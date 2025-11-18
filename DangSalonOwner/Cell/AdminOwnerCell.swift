@@ -1,8 +1,5 @@
 //
 //  AdminOwnerCell.swift
-//  DangSalonOwner
-//
-//  Created by 최영건 on 11/6/25.
 //
 
 import UIKit
@@ -10,11 +7,12 @@ import SnapKit
 
 final class AdminOwnerCell: UITableViewCell {
     
-    private let emailLabel = UILabel()
-    private let dateLabel = UILabel()
+    private let nameLabel = UILabel()
+    private let shopLabel = UILabel()
     private let approveButton = UIButton(type: .system)
     private let rejectButton = UIButton(type: .system)
     
+    // 콜백
     var onApprove: (() -> Void)?
     var onReject: (() -> Void)?
     
@@ -25,42 +23,62 @@ final class AdminOwnerCell: UITableViewCell {
     required init?(coder: NSCoder) { fatalError() }
     
     private func setupUI() {
-        emailLabel.font = .systemFont(ofSize: 15, weight: .medium)
-        dateLabel.font = .systemFont(ofSize: 13)
-        dateLabel.textColor = .secondaryLabel
+        nameLabel.font = .boldSystemFont(ofSize: 16)
+        shopLabel.font = .systemFont(ofSize: 14)
+        shopLabel.textColor = .gray
         
         approveButton.setTitle("승인", for: .normal)
+        approveButton.backgroundColor = .systemGreen
         approveButton.tintColor = .white
-        approveButton.backgroundColor = .systemBlue
         approveButton.layer.cornerRadius = 8
-        approveButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
-        approveButton.addTarget(self, action: #selector(didTapApprove), for: .touchUpInside)
         
         rejectButton.setTitle("거절", for: .normal)
-        rejectButton.tintColor = .white
         rejectButton.backgroundColor = .systemRed
+        rejectButton.tintColor = .white
         rejectButton.layer.cornerRadius = 8
-        rejectButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
-        rejectButton.addTarget(self, action: #selector(didTapReject), for: .touchUpInside)
         
-        let hStack = UIStackView(arrangedSubviews: [approveButton, rejectButton])
-        hStack.axis = .horizontal
-        hStack.spacing = 8
-        hStack.distribution = .fillEqually
+        approveButton.addTarget(self, action: #selector(approveTapped), for: .touchUpInside)
+        rejectButton.addTarget(self, action: #selector(rejectTapped), for: .touchUpInside)
         
-        [emailLabel, dateLabel, hStack].forEach { contentView.addSubview($0) }
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(shopLabel)
+        contentView.addSubview(approveButton)
+        contentView.addSubview(rejectButton)
         
-        emailLabel.snp.makeConstraints { $0.top.leading.equalToSuperview().inset(12) }
-        dateLabel.snp.makeConstraints { $0.top.equalTo(emailLabel.snp.bottom).offset(4); $0.leading.equalTo(emailLabel) }
-        hStack.snp.makeConstraints { $0.trailing.equalToSuperview().inset(12); $0.centerY.equalToSuperview(); $0.width.equalTo(120) }
+        nameLabel.snp.makeConstraints {
+            $0.top.leading.equalToSuperview().inset(12)
+        }
+        
+        shopLabel.snp.makeConstraints {
+            $0.leading.equalTo(nameLabel)
+            $0.top.equalTo(nameLabel.snp.bottom).offset(4)
+        }
+        
+        approveButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(12)
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(60)
+            $0.height.equalTo(32)
+        }
+        
+        rejectButton.snp.makeConstraints {
+            $0.trailing.equalTo(approveButton.snp.leading).offset(-8)
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(60)
+            $0.height.equalTo(32)
+        }
     }
     
     func configure(with owner: OwnerUser) {
-        emailLabel.text = owner.email
-        let formmater = DateFormatter()
-        formmater.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateLabel.text = formmater.string(from: owner.createdAt)
+        nameLabel.text = owner.ownerName
+        shopLabel.text = owner.shopName
     }
-    @objc private func didTapApprove() { onApprove?() }
-    @objc private func didTapReject() { onReject?() }
+    
+    @objc private func approveTapped() {
+        onApprove?()
+    }
+    
+    @objc private func rejectTapped() {
+        onReject?()
+    }
 }

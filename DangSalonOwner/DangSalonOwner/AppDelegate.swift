@@ -50,7 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let fcmToken = fcmToken else { return }
-        print("🔔 FCM 토큰: \(fcmToken)")
         
         if let owner = Auth.auth().currentUser {
             let db = Firestore.firestore()

@@ -16,11 +16,44 @@ final class ReservationListVC: UIViewController {
     private let db = Firestore.firestore()
     private var reservations: [Reservation] = []
     
+    // 🟢 상태 표시용 라벨 (비로그인 / 예약없음 공용)
+    private let stateLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = ""
+        lb.font = .systemFont(ofSize: 16, weight: .medium)
+        lb.textColor = .systemGray
+        lb.textAlignment = .center
+        lb.numberOfLines = 0
+        lb.isHidden = true
+        return lb
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "예약 목록"
+        
         setupTableView()
+        
+        // 라벨 추가
+        view.addSubview(stateLabel)
+        stateLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
+        checkLoginAndFetch()
+    }
+    
+    private func checkLoginAndFetch() {
+        // 🔥 비로그인 상태
+        if Auth.auth().currentUser == nil {
+            stateLabel.text = "로그인 후 예약을 확인할 수 있어요 😊"
+            stateLabel.isHidden = false
+            tableView.isHidden = true
+            return
+        }
+        
+        // 로그인 O → 데이터 fetch
         fetchReservations()
     }
     
@@ -40,19 +73,33 @@ final class ReservationListVC: UIViewController {
     
     private func fetchReservations() {
         guard let ownerId = Auth.auth().currentUser?.uid else { return }
-
+        
         db.collection("reservations")
             .whereField("ownerId", isEqualTo: ownerId)
             .order(by: "createdAt", descending: true)
             .getDocuments { [weak self] snap, err in
                 guard let self = self else { return }
+                
                 if let err = err {
                     print("예약 불러오기 실패:", err.localizedDescription)
                     return
                 }
-
+                
                 self.reservations = snap?.documents.compactMap { Reservation(document: $0) } ?? []
-                DispatchQueue.main.async { self.tableView.reloadData() }
+                
+                DispatchQueue.main.async {
+                    if self.reservations.isEmpty {
+                        // 🟡 로그인 O + 예약 없음
+                        self.stateLabel.text = "예약 내역이 없습니다 🐶"
+                        self.stateLabel.isHidden = false
+                        self.tableView.isHidden = true
+                    } else {
+                        // 🟢 예약 있음
+                        self.stateLabel.isHidden = true
+                        self.tableView.isHidden = false
+                        self.tableView.reloadData()
+                    }
+                }
             }
     }
 }

@@ -10,15 +10,18 @@ import FirebaseFirestore
 
 struct OwnerUser {
     let id: String
-    let email: String
-    let createdAt: Date
+    let ownerName: String
+    let shopName: String
+    let businessNumber: String
+    let isApproved: Bool
     
     init?(document: DocumentSnapshot) {
-        guard let data = document.data(),
-              let email = data["email"] as? String,
-              let timestamp = data["createdAt"] as? Timestamp else { return nil }
+        let data = document.data() ?? [:]
+        
         self.id = document.documentID
-        self.email = email
-        self.createdAt = timestamp.dateValue()
+        self.ownerName = data["ownerName"] as? String ?? "이름 없음"
+        self.shopName = data["shopName"] as? String ?? "가게명 없음"
+        self.businessNumber = data["businessNumber"] as? String ?? ""
+        self.isApproved = data["isApproved"] as? Bool ?? false
     }
 }
