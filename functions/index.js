@@ -4,7 +4,6 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-// 🟦 새 예약 생성 → 사장님에게 알림
 exports.sendNewReservationNotification = onDocumentCreated(
   "reservations/{reservationId}",
   async (event) => {
@@ -30,23 +29,44 @@ exports.sendNewReservationNotification = onDocumentCreated(
     const token = ownerDoc.data().fcmToken;
 
     if (!token) {
-      console.log("❌ FCM 토큰 없음");
+      console.log("❌ 사장님 FCM 토큰 없음");
       return;
     }
 
+    // 🔥 iOS 푸시 완전 호환 메시지
     const message = {
+      token,
       notification: {
-        title: "새 예약 요청",
+        title: "📢 새 예약 도착!",
         body: `${data.userName}님이 예약을 요청했습니다.`,
       },
-      token: token,
+      apns: {
+        payload: {
+          aps: {
+            alert: {
+              title: "📢 새 예약 도착!",
+              body: `${data.userName}님이 예약을 요청했습니다.`,
+            },
+            sound: "default",
+            badge: 1,
+            contentAvailable: 1,
+          },
+        },
+        headers: {
+          "apns-priority": "10",
+        },
+      },
+      data: {
+        reservationId: event.params.reservationId,
+        ownerId: ownerId,
+      },
     };
 
     try {
       await getMessaging().send(message);
-      console.log("📨 푸시 알림 전송 성공!");
+      console.log("📨 iOS 푸시 전송 성공!");
     } catch (e) {
-      console.error("🚨 푸시 알림 실패:", e);
+      console.error("🚨 푸시 전송 실패:", e);
     }
   }
 );
