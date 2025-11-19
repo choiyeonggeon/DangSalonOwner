@@ -8,77 +8,73 @@ import SnapKit
 final class AdminOwnerCell: UITableViewCell {
     
     private let nameLabel = UILabel()
-    private let shopLabel = UILabel()
+    private let emailLabel = UILabel()
+    
     private let approveButton = UIButton(type: .system)
     private let rejectButton = UIButton(type: .system)
     
-    // 콜백
     var onApprove: (() -> Void)?
     var onReject: (() -> Void)?
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle,
+                  reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
     required init?(coder: NSCoder) { fatalError() }
     
     private func setupUI() {
-        nameLabel.font = .boldSystemFont(ofSize: 16)
-        shopLabel.font = .systemFont(ofSize: 14)
-        shopLabel.textColor = .gray
         
         approveButton.setTitle("승인", for: .normal)
-        approveButton.backgroundColor = .systemGreen
+        approveButton.backgroundColor = .systemBlue
         approveButton.tintColor = .white
         approveButton.layer.cornerRadius = 8
         
-        rejectButton.setTitle("거절", for: .normal)
+        rejectButton.setTitle("삭제", for: .normal)
         rejectButton.backgroundColor = .systemRed
         rejectButton.tintColor = .white
         rejectButton.layer.cornerRadius = 8
         
-        approveButton.addTarget(self, action: #selector(approveTapped), for: .touchUpInside)
-        rejectButton.addTarget(self, action: #selector(rejectTapped), for: .touchUpInside)
+        approveButton.addTarget(self, action: #selector(tapApprove), for: .touchUpInside)
+        rejectButton.addTarget(self, action: #selector(tapReject), for: .touchUpInside)
         
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(shopLabel)
-        contentView.addSubview(approveButton)
-        contentView.addSubview(rejectButton)
-        
-        nameLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().inset(12)
+        [nameLabel, emailLabel, approveButton, rejectButton].forEach {
+            contentView.addSubview($0)
         }
         
-        shopLabel.snp.makeConstraints {
-            $0.leading.equalTo(nameLabel)
+        nameLabel.snp.makeConstraints {
+            $0.top.leading.equalToSuperview().offset(12)
+        }
+        
+        emailLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(4)
+            $0.leading.equalTo(nameLabel)
         }
         
         approveButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(12)
             $0.centerY.equalToSuperview()
             $0.width.equalTo(60)
-            $0.height.equalTo(32)
+            $0.height.equalTo(34)
         }
         
         rejectButton.snp.makeConstraints {
             $0.trailing.equalTo(approveButton.snp.leading).offset(-8)
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalTo(approveButton)
             $0.width.equalTo(60)
-            $0.height.equalTo(32)
+            $0.height.equalTo(34)
         }
     }
     
+    @objc private func tapApprove() { onApprove?() }
+    @objc private func tapReject() { onReject?() }
+    
     func configure(with owner: OwnerUser) {
         nameLabel.text = owner.ownerName
-        shopLabel.text = owner.shopName
+        emailLabel.text = owner.email
     }
     
-    @objc private func approveTapped() {
-        onApprove?()
-    }
-    
-    @objc private func rejectTapped() {
-        onReject?()
+    func setApprovedUI() {
+        approveButton.isHidden = true
     }
 }

@@ -76,8 +76,8 @@ final class OwnerTabBarController: UITabBarController {
         
         // 🔥 관리자(admin) 계정이면 추가 탭 표시
         if role == "admin" {
-            let adminVC = UINavigationController(rootViewController: AdminApprovedListVC())
-            adminVC.tabBarItem = UITabBarItem(title: "승인 관리",
+            let adminVC = UINavigationController(rootViewController: AdminVC())
+            adminVC.tabBarItem = UITabBarItem(title: "관리자",
                                               image: UIImage(systemName: "checkmark.seal"),
                                               tag: 4)
             
