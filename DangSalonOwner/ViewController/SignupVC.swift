@@ -21,6 +21,13 @@ final class SignupVC: UIViewController {
         return lb
     }()
     
+    private let nameField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "이름"
+        tf.borderStyle = .roundedRect
+        return tf
+    }()
+    
     private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "이메일"
@@ -46,6 +53,32 @@ final class SignupVC: UIViewController {
         return tf
     }()
     
+    private let phoneField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "휴대폰 번호 (숫자만)"
+        tf.borderStyle = .roundedRect
+        tf.keyboardType = .numberPad
+        return tf
+    }()
+    
+    private let requestCodeButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("인증번호 요청", for: .normal)
+        btn.backgroundColor = .systemGray4
+        btn.layer.cornerRadius = 8
+        btn.setTitleColor(.black, for: .normal)
+        btn.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        return btn
+    }()
+    
+    private let codeField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "인증번호 입력"
+        tf.borderStyle = .roundedRect
+        tf.keyboardType = .numberPad
+        return tf
+    }()
+    
     private let signupButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("회원가입", for: .normal)
@@ -58,6 +91,7 @@ final class SignupVC: UIViewController {
     }()
     
     private let db = Firestore.firestore()
+    private var verificationID: String?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -68,6 +102,7 @@ final class SignupVC: UIViewController {
         setupLayout()
         
         signupButton.addTarget(self, action: #selector(signupTapped), for: .touchUpInside)
+        requestCodeButton.addTarget(self, action: #selector(requestCode), for: .touchUpInside)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -78,59 +113,116 @@ final class SignupVC: UIViewController {
     private func setupLayout() {
         let stack = UIStackView(arrangedSubviews: [
             titleLabel,
+            nameField,
             emailTextField,
+            phoneField,
+            requestCodeButton,
+            codeField,
             passwordField,
             confirmPasswordField,
             signupButton
         ])
         stack.axis = .vertical
-        stack.spacing = 16
+        stack.spacing = 14
         
         view.addSubview(stack)
         stack.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
             $0.leading.trailing.equalToSuperview().inset(40)
         }
     }
     
-    // MARK: - Actions
-    
-    @objc private func signupTapped() {
-        guard let email = emailTextField.text, !email.isEmpty,
-              let password = passwordField.text, !password.isEmpty,
-              let confirmPassword = confirmPasswordField.text, !confirmPassword.isEmpty else {
-            showAlert(title: "입력 오류", message: "모든 필드를 입력해주세요.")
+    @objc private func requestCode() {
+        guard let phone = phoneField.text, !phone.isEmpty else {
+            showAlert(title: "입력 오류", message: "휴대폰 번호를 입력해주세요.")
             return
         }
         
-        guard password == confirmPassword else {
-            showAlert(title: "비밀번호 불일치", message: "비밀번호가 일치하지 않습니다.")
-            return
+        let fullPhone = "+82" + phone.dropFirst(1)
+        
+        PhoneAuthProvider.provider().verifyPhoneNumber(fullPhone, uiDelegate: nil) { verificationID, error in
+            if let error = error {
+                self.showAlert(title: "오류", message: error.localizedDescription)
+                return
+            }
+            
+            self.verificationID = verificationID
+            self.showAlert(title: "인증번호 발송", message: "휴대폰으로 인증번호가 전송되었습니다.")
+        }
+    }
+    
+    // MARK: - Actions
+    // MARK: - 회원가입 처리
+    @objc private func signupTapped() {
+        
+        guard let name = nameField.text, !name.isEmpty else {
+            return showAlert(title: "입력 오류", message: "이름을 입력해주세요.")
+        }
+        
+        guard let email = emailTextField.text, !email.isEmpty else {
+            return showAlert(title: "입력 오류", message: "이메일을 입력해주세요.")
+        }
+        
+        guard let phone = phoneField.text, !phone.isEmpty else {
+            return showAlert(title: "입력 오류", message: "휴대폰 번호를 입력해주세요.")
+        }
+        
+        guard let code = codeField.text, !code.isEmpty else {
+            return showAlert(title: "인증 필요", message: "인증번호를 입력해주세요.")
+        }
+        
+        guard let password = passwordField.text,
+              let confirm = confirmPasswordField.text,
+              !password.isEmpty, !confirm.isEmpty else {
+            return showAlert(title: "입력 오류", message: "비밀번호를 모두 입력해주세요.")
+        }
+        
+        guard password == confirm else {
+            return showAlert(title: "불일치", message: "비밀번호가 일치하지 않습니다.")
         }
         
         guard isValidPassword(password) else {
-            showAlert(title: "비밀번호 오류", message: "비밀번호는 최소 8자 이상이며 특수문자를 포함해야 합니다.")
-            return
+            return showAlert(title: "비밀번호 오류", message: "비밀번호는 8자 이상, 특수문자를 포함해야 합니다.")
         }
         
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+        guard let verificationID = verificationID else {
+            return showAlert(title: "인증 필요", message: "휴대폰 인증을 먼저 진행해주세요.")
+        }
+        
+        // 🔥 휴대폰 인증 검증
+        let credential = PhoneAuthProvider.provider().credential(
+            withVerificationID: verificationID,
+            verificationCode: code
+        )
+        
+        Auth.auth().signIn(with: credential) { _, error in
             if let error = error {
-                self?.showAlert(title: "회원가입 실패", message: error.localizedDescription)
-                return
+                return self.showAlert(title: "인증 실패", message: error.localizedDescription)
             }
-            guard let uid = result?.user.uid else { return }
             
-            self?.db.collection("users").document(uid).setData([
-                "email": email,
-                "role": "owner",
-                "isApproved": false,
-                "createdAt": Timestamp(date: Date())
-            ]) { error in
+            // 🔥 email + password 계정 생성
+            Auth.auth().createUser(withEmail: email, password: password) { result, error in
                 if let error = error {
-                    self?.showAlert(title: "저장 실패", message: error.localizedDescription)
-                } else {
-                    self?.showAlert(title: "가입 완료", message: "회원가입이 완료되었습니다.\n관리자 승인 후 로그인 가능합니다.") {
-                        self?.navigationController?.popViewController(animated: true)
+                    return self.showAlert(title: "회원가입 실패", message: error.localizedDescription)
+                }
+                
+                guard let uid = result?.user.uid else { return }
+                
+                // 🔥 Firestore 저장
+                self.db.collection("users").document(uid).setData([
+                    "name": name,
+                    "email": email,
+                    "phone": phone,
+                    "role": "owner",
+                    "isApproved": false,
+                    "createdAt": Timestamp()
+                ]) { error in
+                    if let error = error {
+                        self.showAlert(title: "저장 오류", message: error.localizedDescription)
+                    } else {
+                        self.showAlert(title: "가입 완료", message: "회원가입이 완료되었습니다.") {
+                            self.navigationController?.popViewController(animated: true)
+                        }
                     }
                 }
             }

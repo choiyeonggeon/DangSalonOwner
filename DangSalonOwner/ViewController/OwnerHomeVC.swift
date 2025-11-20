@@ -363,6 +363,25 @@ final class OwnerHomeVC: UIViewController {
             lb.text = text
             statusStack.addArrangedSubview(lb)
         }
+        
+        // 🔥🔥 그래프 데이터 업데이트 (월간 매출 막대 그래프)
+        let calendar = Calendar.current
+        let days = 31   // 최대 31일
+        
+        var dailySales = Array(repeating: 0, count: days)
+        
+        // "완료"된 예약만 매출로 계산
+        let completedReservations = reservations.filter { $0.status == "완료" }
+        
+        for r in completedReservations {
+            let day = calendar.component(.day, from: r.date) - 1
+            if day >= 0 && day < days {
+                dailySales[day] += r.totalPrice
+            }
+        }
+        
+        // 🔥 그래프 업데이트
+        salesChartView.configure(with: dailySales)
     }
     
     private func updateTodayCount() {

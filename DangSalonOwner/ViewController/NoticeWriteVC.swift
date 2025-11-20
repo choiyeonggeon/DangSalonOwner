@@ -2,8 +2,6 @@
 //  NoticeWriteVC.swift
 //  DangSalonOwner
 //
-//  Created by 최영건 on 11/19/25.
-//
 
 import UIKit
 import SnapKit
@@ -42,7 +40,7 @@ final class NoticeWriteVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "공지사항 작성"
+        title = "사장 공지 작성"
         
         setupLayout()
         submitButton.addTarget(self, action: #selector(submitNotice), for: .touchUpInside)
@@ -84,16 +82,19 @@ final class NoticeWriteVC: UIViewController {
             "createdAt": Timestamp()
         ]
         
-        db.collection("notices").addDocument(data: data) { error in
-            if let error = error {
-                self.showAlert("등록 실패: \(error.localizedDescription)")
-                return
+        // 🔥 사장님 전용 공지 컬렉션으로 변경
+        db.collection("ownerNotices")
+            .addDocument(data: data) { error in
+                
+                if let error = error {
+                    self.showAlert("등록 실패: \(error.localizedDescription)")
+                    return
+                }
+                
+                self.showAlert("공지사항이 등록되었습니다.") {
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
-            
-            self.showAlert("공지사항이 등록되었습니다.") {
-                self.navigationController?.popViewController(animated: true)
-            }
-        }
     }
     
     private func showAlert(_ msg: String, completion: (() -> Void)? = nil) {

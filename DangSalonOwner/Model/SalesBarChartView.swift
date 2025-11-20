@@ -2,42 +2,89 @@
 //  SalesBarChartView.swift
 //  DangSalonOwner
 //
-//  Created by 최영건 on 11/16/25.
-//
 
 import UIKit
 
 final class SalesBarChartView: UIView {
     
+    // 데이터
     private var values: [Int] = []
-    private let barColor: UIColor = .systemBlue
-    private let barSpacing: CGFloat = 6
     
-    func configure(with values: [Int]) {
-        self.values = values
-        setNeedsDisplay()
+    // 그래프 레이어
+    private let graphLayer = SalesGraphLayer()
+    
+    // 날짜 라벨들
+    private let labelsStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .horizontal
+        sv.alignment = .center
+        sv.distribution = .fillEqually
+        sv.spacing = 0
+        return sv
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLayout()
     }
     
-    override func draw(_ rect: CGRect) {
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupLayout()
+    }
+    
+    private func setupLayout() {
+        backgroundColor = .white
+        
+        // 그래프 레이어 추가
+        layer.addSublayer(graphLayer)
+        
+        // 아래 날짜 라벨 추가
+        addSubview(labelsStackView)
+        
+        labelsStackView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(18)
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let graphHeight: CGFloat = bounds.height - 22
+        graphLayer.frame = CGRect(
+            x: 0, y: 0,
+            width: bounds.width,
+            height: graphHeight
+        )
+        
+        graphLayer.setNeedsDisplay()
+    }
+    
+    // 🔥 외부에서 그래프 업데이트
+    func configure(with values: [Int]) {
+        self.values = values
+        graphLayer.values = values
+        setupDateLabels()
+        setNeedsLayout()
+    }
+    
+    // MARK: - 날짜 라벨
+    private func setupDateLabels() {
+        labelsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
         guard !values.isEmpty else { return }
         
-        let maxVal = values.max() ?? 1
-        let context = UIGraphicsGetCurrentContext()
+        let today = Calendar.current.component(.day, from: Date())
         
-        let barWidth: CGFloat = (rect.width - CGFloat(values.count - 1) * barSpacing) / CGFloat(values.count)
-        
-        for (index, val) in values.enumerated() {
+        for i in 1...values.count {
+            let lb = UILabel()
+            lb.text = "\(i)"
+            lb.font = .systemFont(ofSize: 10)
+            lb.textAlignment = .center
+            lb.textColor = (i == today ? .systemGreen : .secondaryLabel)
             
-            let normalized = CGFloat(val) / CGFloat(maxVal)
-            let barHeight = rect.height * normalized
-            
-            let x = CGFloat(index) * (barWidth + barSpacing)
-            let y = rect.height - barHeight
-            
-            let barRect = CGRect(x: x, y: y, width: barWidth, height: barHeight)
-            
-            context?.setFillColor(barColor.cgColor)
-            context?.fill(barRect)
+            labelsStackView.addArrangedSubview(lb)
         }
     }
 }
