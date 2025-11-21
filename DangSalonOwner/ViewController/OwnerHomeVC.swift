@@ -10,6 +10,8 @@ import FirebaseFirestore
 
 final class OwnerHomeVC: UIViewController {
     
+    private var reservationListener: ListenerRegistration?
+    
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
@@ -55,6 +57,7 @@ final class OwnerHomeVC: UIViewController {
         setupScroll()
         setupUI()
         fetchAllReservations()
+        startRealtimeReservationListener()
     }
     
     // MARK: - Scroll Setup
@@ -65,9 +68,10 @@ final class OwnerHomeVC: UIViewController {
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        // iPhone → 기존처럼 화면 가득
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-            $0.width.equalTo(scrollView.snp.width)  // 세로 스크롤
+            $0.width.equalTo(scrollView.snp.width)
         }
     }
     
@@ -78,6 +82,43 @@ final class OwnerHomeVC: UIViewController {
         v.layer.shadowOpacity = 0.1
         v.layer.shadowRadius = 6
         v.layer.shadowOffset = CGSize(width: 0, height: 3)
+    }
+    
+    private func startRealtimeReservationListener() {
+        guard let ownerId = Auth.auth().currentUser?.uid else { return }
+        
+        reservationListener = db.collection("reservations")
+            .whereField("ownerId", isEqualTo: ownerId)
+            .addSnapshotListener { [weak self] snapshot, error in
+                guard let self = self else { return }
+                guard let snapshot = snapshot else { return }
+                
+                // 어떤 변화가 있었는지 확인
+                for diff in snapshot.documentChanges {
+                    
+                    // 🔥 신규 예약 생성
+                    if diff.type == .added {
+                        let data = diff.document.data()
+                        let status = data["status"] as? String ?? ""
+                        let time = data["time"] as? String ?? ""
+                        let userName = data["userName"] as? String ?? "고객"
+                        
+                        // 예약 요청만 알림 띄우기
+                        if status == "예약 요청" {
+                            self.showInAppAlert("\(userName)님이 예약 요청을 보냈습니다.\n시간: \(time)")
+                        }
+                    }
+                }
+            }
+    }
+    
+    private func showInAppAlert(_ message: String) {
+        let alert = UIAlertController(title: "🔔 새로운 예약", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        
+        SoundManager.shared.playNotificationSound()
+        
+        present(alert, animated: true)
     }
     
     // MARK: - UI Setup
@@ -418,5 +459,8 @@ final class OwnerHomeVC: UIViewController {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         return formatter.string(from: NSNumber(value: num)) ?? "\(num)"
+    }
+    deinit {
+        reservationListener?.remove()
     }
 }

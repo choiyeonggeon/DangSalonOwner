@@ -74,18 +74,21 @@ final class OwnerTabBarController: UITabBarController {
         settingVC.tabBarItem = UITabBarItem(title: "설정", image: UIImage(systemName: "gearshape"), tag: 3)
         
         
-        // 🔥 관리자(admin) 계정이면 추가 탭 표시
-        if role == "admin" {
-            let adminVC = UINavigationController(rootViewController: AdminVC())
-            adminVC.tabBarItem = UITabBarItem(title: "관리자",
-                                              image: UIImage(systemName: "checkmark.seal"),
-                                              tag: 4)
-            
-            viewControllers = [homeVC, reservationVC, shopVC, settingVC, adminVC]
-        } else {
-            // 일반 사장님
-            viewControllers = [homeVC, reservationVC, shopVC, settingVC]
-        }
+        //        // 🔥 관리자(admin) 계정이면 추가 탭 표시
+        //        if role == "admin" {
+        //            let adminVC = UINavigationController(rootViewController: AdminVC())
+        //            adminVC.tabBarItem = UITabBarItem(title: "관리자",
+        //                                              image: UIImage(systemName: "checkmark.seal"),
+        //                                              tag: 4)
+        //
+        //            viewControllers = [homeVC, reservationVC, shopVC, settingVC, adminVC]
+        //        } else {
+        //            // 일반 사장님
+        //            viewControllers = [homeVC, reservationVC, shopVC, settingVC]
+        //        }
+        
+        viewControllers = [homeVC, reservationVC, shopVC, settingVC]
+        
     }
 }
 

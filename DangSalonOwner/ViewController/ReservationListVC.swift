@@ -16,7 +16,6 @@ final class ReservationListVC: UIViewController {
     private let db = Firestore.firestore()
     private var reservations: [Reservation] = []
     
-    // 🟢 상태 표시용 라벨 (비로그인 / 예약없음 공용)
     private let stateLabel: UILabel = {
         let lb = UILabel()
         lb.text = ""
@@ -35,7 +34,6 @@ final class ReservationListVC: UIViewController {
         
         setupTableView()
         
-        // 라벨 추가
         view.addSubview(stateLabel)
         stateLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -78,6 +76,7 @@ final class ReservationListVC: UIViewController {
             .whereField("ownerId", isEqualTo: ownerId)
             .order(by: "createdAt", descending: true)
             .getDocuments { [weak self] snap, err in
+                
                 guard let self = self else { return }
                 
                 if let err = err {
@@ -89,12 +88,10 @@ final class ReservationListVC: UIViewController {
                 
                 DispatchQueue.main.async {
                     if self.reservations.isEmpty {
-                        // 🟡 로그인 O + 예약 없음
                         self.stateLabel.text = "예약 내역이 없습니다 🐶"
                         self.stateLabel.isHidden = false
                         self.tableView.isHidden = true
                     } else {
-                        // 🟢 예약 있음
                         self.stateLabel.isHidden = true
                         self.tableView.isHidden = false
                         self.tableView.reloadData()
@@ -104,13 +101,14 @@ final class ReservationListVC: UIViewController {
     }
 }
 
-// MARK: - TableView
 extension ReservationListVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         reservations.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         let res = reservations[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReservationCell", for: indexPath) as! ReservationCell
         cell.configure(with: res)

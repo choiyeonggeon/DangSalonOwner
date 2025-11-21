@@ -49,6 +49,10 @@ final class MyShopEditVC: UIViewController {
         return tv
     }()
     
+    private let ownerNameField = MyShopEditVC.makeTextField(placeholder: "대표자명")
+    private let businessNumberField = MyShopEditVC.makeTextField(placeholder: "사업자등록번호 (10자리)")
+    private let workingDaysField = MyShopEditVC.makeTextField(placeholder: "영업일 (예: 월~금)")
+    
     private let saveButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("저장하기", for: .normal)
@@ -95,7 +99,9 @@ final class MyShopEditVC: UIViewController {
     private func setupLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        [imageView, nameField, addressField, phoneField, descView, saveButton].forEach { contentView.addSubview($0) }
+        [imageView, nameField, addressField, phoneField,
+         descView, ownerNameField, businessNumberField,
+         workingDaysField, saveButton].forEach { contentView.addSubview($0) }
         
         scrollView.snp.makeConstraints { $0.edges.equalToSuperview() }
         contentView.snp.makeConstraints {
@@ -108,6 +114,7 @@ final class MyShopEditVC: UIViewController {
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(140)
         }
+        
         nameField.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -118,18 +125,39 @@ final class MyShopEditVC: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(48)
         }
+        
         phoneField.snp.makeConstraints {
             $0.top.equalTo(addressField.snp.bottom).offset(12)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(48)
         }
+        
         descView.snp.makeConstraints {
             $0.top.equalTo(phoneField.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(140)
         }
-        saveButton.snp.makeConstraints {
-            $0.top.equalTo(descView.snp.bottom).offset(24)
+        
+        ownerNameField.snp.makeConstraints {
+            $0.top.equalTo(descView.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(48)
+        }
+        
+        businessNumberField.snp.makeConstraints {
+            $0.top.equalTo(ownerNameField.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(48)
+        }
+        
+        workingDaysField.snp.makeConstraints {
+            $0.top.equalTo(businessNumberField.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(48)
+        }
+        
+        saveButton.snp.remakeConstraints {
+            $0.top.equalTo(workingDaysField.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(200)
             $0.bottom.equalToSuperview().inset(40)
@@ -150,6 +178,9 @@ final class MyShopEditVC: UIViewController {
                 self.addressField.text = data["address"] as? String ?? ""
                 self.phoneField.text = data["phone"] as? String ?? ""
                 self.descView.text = data["description"] as? String ?? ""
+                self.ownerNameField.text = data["ownerName"] as? String ?? ""
+                self.businessNumberField.text = data["businessNumber"] as? String ?? ""
+                self.workingDaysField.text = data["workingDays"] as? String ?? ""
                 self.descView.textColor = .label
                 
                 if let urlString = (data["imageURLs"] as? [String])?.first,
@@ -195,7 +226,10 @@ final class MyShopEditVC: UIViewController {
             "name": name,
             "address": address,
             "phone": phone,
-            "description": desc
+            "description": desc,
+            "ownerName": ownerNameField.text ?? "",
+            "businessNumber": businessNumberField.text ?? "",
+            "workingDays": workingDaysField.text ?? ""
         ]
         
         // 이미지 변경 시 업로드

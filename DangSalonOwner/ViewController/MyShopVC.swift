@@ -2,8 +2,6 @@
 //  MyShopVC.swift
 //  DangSalonOwner
 //
-//  Created by 최영건 on 11/7/25.
-//
 
 import UIKit
 import SnapKit
@@ -17,22 +15,24 @@ final class MyShopVC: UIViewController {
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     
+    // 메인 카드
     private let cardView: UIView = {
         let v = UIView()
         v.backgroundColor = .white
         v.layer.cornerRadius = 20
         v.layer.shadowColor = UIColor.black.cgColor
-        v.layer.shadowOpacity = 0.08 // ✅ 자연스러운 그림자
+        v.layer.shadowOpacity = 0.08
         v.layer.shadowOffset = CGSize(width: 0, height: 3)
         v.layer.shadowRadius = 6
         return v
     }()
     
+    // UI 요소들
     private let imageView: UIImageView = {
         let iv = UIImageView()
         iv.backgroundColor = .systemGray6
         iv.contentMode = .scaleAspectFill
-        iv.layer.cornerRadius = 16
+        iv.layer.cornerRadius = 18
         iv.clipsToBounds = true
         return iv
     }()
@@ -61,6 +61,7 @@ final class MyShopVC: UIViewController {
     private let descLabel = UILabel()
     private let addressLabel = UILabel()
     private let phoneLabel = UILabel()
+    
     private let divider1 = UIView()
     private let divider2 = UIView()
     
@@ -82,9 +83,10 @@ final class MyShopVC: UIViewController {
     
     // MARK: - UI 구성
     private func setupUI() {
+        
+        // Scroll
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(cardView)
         
         scrollView.snp.makeConstraints { $0.edges.equalToSuperview() }
         contentView.snp.makeConstraints {
@@ -92,24 +94,32 @@ final class MyShopVC: UIViewController {
             $0.width.equalTo(scrollView.snp.width)
         }
         
-        [imageView, nameLabel, descLabel,
+        // Card
+        contentView.addSubview(cardView)
+        let isWide = traitCollection.horizontalSizeClass == .regular
+        
+        cardView.snp.makeConstraints { make in
+            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(30)
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(isWide ? 120 : 20)
+            make.bottom.equalToSuperview().inset(40)
+        }
+        
+        // Add_subviews
+        [imageView,
+         nameLabel, descLabel,
          divider1, addressLabel,
-         divider2, phoneLabel, editButton, reviewButton].forEach { cardView.addSubview($0) }
+         divider2, phoneLabel].forEach { cardView.addSubview($0) }
         
-        // cardView 제약
-        cardView.snp.makeConstraints {
-            $0.top.equalTo(contentView.safeAreaLayoutGuide).offset(30)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.bottom.equalToSuperview().inset(30)
-        }
-        
+        // 이미지
         imageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
+            $0.top.equalToSuperview().offset(24)
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(140)
+            $0.width.height.equalTo(isWide ? 180 : 140)
         }
         
-        nameLabel.font = .boldSystemFont(ofSize: 22)
+        // 상단 텍스트
+        nameLabel.font = .boldSystemFont(ofSize: isWide ? 26 : 22)
         nameLabel.textAlignment = .center
         
         descLabel.font = .systemFont(ofSize: 16)
@@ -117,62 +127,80 @@ final class MyShopVC: UIViewController {
         descLabel.textAlignment = .center
         
         nameLabel.snp.makeConstraints {
-            $0.top.equalTo(imageView.snp.bottom).offset(16)
+            $0.top.equalTo(imageView.snp.bottom).offset(18)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
-        
         descLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(6)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
+        // Divider
         [divider1, divider2].forEach {
             $0.backgroundColor = UIColor.systemGray5
             $0.snp.makeConstraints { $0.height.equalTo(1 / UIScreen.main.scale) }
         }
         
-        addressLabel.font = .systemFont(ofSize: 16)
-        phoneLabel.font = .systemFont(ofSize: 16)
-        addressLabel.numberOfLines = 0
-        phoneLabel.numberOfLines = 0
-        addressLabel.textColor = .label
-        phoneLabel.textColor = .label
-        
         divider1.snp.makeConstraints {
-            $0.top.equalTo(descLabel.snp.bottom).offset(20)
+            $0.top.equalTo(descLabel.snp.bottom).offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
+        
+        // 주소
+        addressLabel.font = .systemFont(ofSize: 16)
+        addressLabel.numberOfLines = 0
+        
         addressLabel.snp.makeConstraints {
-            $0.top.equalTo(divider1.snp.bottom).offset(12)
+            $0.top.equalTo(divider1.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(24)
         }
+        
+        // 전화번호
         divider2.snp.makeConstraints {
             $0.top.equalTo(addressLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
+        
+        phoneLabel.font = .systemFont(ofSize: 16)
+        phoneLabel.numberOfLines = 0
+        
         phoneLabel.snp.makeConstraints {
-            $0.top.equalTo(divider2.snp.bottom).offset(12)
+            $0.top.equalTo(divider2.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(24)
         }
-        editButton.snp.makeConstraints {
-            $0.top.equalTo(phoneLabel.snp.bottom).offset(28)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(200)
-            $0.height.equalTo(50)
+        
+        // 버튼 2개: 가로 정렬 (iPad/Mac) / 세로 정렬(iPhone)
+        let buttonStack = UIStackView(arrangedSubviews: [editButton, reviewButton])
+        buttonStack.axis = isWide ? .horizontal : .vertical
+        buttonStack.spacing = 14
+        buttonStack.distribution = .fillEqually
+        
+        cardView.addSubview(buttonStack)
+        
+        // iPad & Mac: 가로 배치 → 높이 50, 버튼 너비 균등
+        // iPhone: 세로 배치 → 버튼 각각 높이 50
+        buttonStack.snp.makeConstraints {
+            $0.top.equalTo(phoneLabel.snp.bottom).offset(30)
+            $0.leading.trailing.equalToSuperview().inset(24)
+            
+            if isWide {
+                // iPad / Mac
+                $0.height.equalTo(50)
+            } else {
+                // iPhone → 버튼 개수 * 50 높이
+                $0.height.equalTo(50 * 2 + 14)   // 버튼 2개 + 간격 14
+            }
+            
+            $0.bottom.equalToSuperview().inset(24)
         }
         
-        reviewButton.snp.makeConstraints {
-            $0.top.equalTo(editButton.snp.bottom).offset(12)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(200)
-            $0.height.equalTo(50)
-            $0.bottom.equalToSuperview().inset(20)  // 마지막을 reviewButton이 잡도록 변경
-        }
+        // Button action
         editButton.addTarget(self, action: #selector(editTapped), for: .touchUpInside)
         reviewButton.addTarget(self, action: #selector(openReviewManager), for: .touchUpInside)
     }
     
-    // MARK: - Firestore에서 데이터 불러오기
+    
+    // MARK: - Firestore
     private func fetchShop() {
         db.collection("shops").document(shopId).getDocument { snapshot, error in
             if let error = error {
@@ -180,11 +208,7 @@ final class MyShopVC: UIViewController {
                 return
             }
             
-            guard let data = snapshot?.data() else {
-                print("데이터 없음")
-                return
-            }
-            
+            guard let data = snapshot?.data() else { return }
             DispatchQueue.main.async {
                 self.nameLabel.text = data["name"] as? String ?? "이름 없음"
                 self.descLabel.text = data["description"] as? String ?? "설명 없음"
@@ -194,10 +218,8 @@ final class MyShopVC: UIViewController {
                 if let urlString = (data["imageURLs"] as? [String])?.first,
                    let url = URL(string: urlString) {
                     URLSession.shared.dataTask(with: url) { data, _, _ in
-                        if let data = data, let image = UIImage(data: data) {
-                            DispatchQueue.main.async {
-                                self.imageView.image = image
-                            }
+                        if let data = data, let img = UIImage(data: data) {
+                            DispatchQueue.main.async { self.imageView.image = img }
                         }
                     }.resume()
                 }
@@ -205,7 +227,7 @@ final class MyShopVC: UIViewController {
         }
     }
     
-    // MARK: - 버튼 액션
+    // MARK: - Action
     @objc private func editTapped() {
         let vc = MyShopEditVC(shopId: shopId)
         navigationController?.pushViewController(vc, animated: true)

@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 struct Review {
     let id: String
+    let authorId: String?
     let nickname: String
     let content: String
     let rating: Int
@@ -28,6 +29,7 @@ struct Review {
         }
         
         self.id = document.documentID
+        self.authorId = data["authorId"] as? String
         self.nickname = nickname
         self.content = content
         self.rating = rating

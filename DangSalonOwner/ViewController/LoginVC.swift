@@ -51,12 +51,29 @@ final class LoginVC: UIViewController {
         return btn
     }()
     
-    private let signupButton: UIButton = {
-        let btn = UIButton()
+    // MARK: - 회원가입 / 비밀번호 찾기
+    private let signupTextButton: UIButton = {
+        let btn = UIButton(type: .system)
         btn.setTitle("회원가입", for: .normal)
         btn.setTitleColor(.systemBlue, for: .normal)
-        btn.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        btn.titleLabel?.font = .systemFont(ofSize: 15)
         return btn
+    }()
+    
+    private let resetPasswordTextButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("비밀번호 찾기", for: .normal)
+        btn.setTitleColor(.systemBlue, for: .normal)
+        btn.titleLabel?.font = .systemFont(ofSize: 15)
+        return btn
+    }()
+    
+    private let dividerLabel: UILabel = {
+        let lb = UILabel()
+        lb.text = "|"
+        lb.textColor = .systemGray
+        lb.font = .systemFont(ofSize: 14, weight: .medium)
+        return lb
     }()
     
     private let db = Firestore.firestore()
@@ -72,17 +89,35 @@ final class LoginVC: UIViewController {
         view.addGestureRecognizer(tap)
         
         loginButton.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
-        signupButton.addTarget(self, action: #selector(signupTapped), for: .touchUpInside)
+        signupTextButton.addTarget(self, action: #selector(signupTapped), for: .touchUpInside)
+        resetPasswordTextButton.addTarget(self, action: #selector(resetPasswordTapped), for: .touchUpInside)
     }
     
     // MARK: - Layout
     private func setupLayout() {
+        
+        // ⭐ 회원가입 | 비밀번호 찾기 가로 정렬
+        let horizontalStack = UIStackView(arrangedSubviews: [
+            signupTextButton,
+            dividerLabel,
+            resetPasswordTextButton
+        ])
+        horizontalStack.axis = .horizontal
+        horizontalStack.spacing = 12
+        horizontalStack.alignment = .center
+        horizontalStack.distribution = .equalCentering
+        
+        // 전체 스택
         let stack = UIStackView(arrangedSubviews: [
-            titleLabel, emailField, passwordField, loginButton, signupButton
+            titleLabel,
+            emailField,
+            passwordField,
+            loginButton,
+            horizontalStack
         ])
         
         stack.axis = .vertical
-        stack.spacing = 16
+        stack.spacing = 18
         stack.alignment = .fill
         
         view.addSubview(stack)
@@ -114,6 +149,7 @@ final class LoginVC: UIViewController {
                     self?.showAlert(title: "승인 대기 중", message: "관리자 승인 후 로그인 가능합니다.")
                     return
                 }
+                
                 if isApproved {
                     let tab = OwnerTabBarController()
                     tab.modalPresentationStyle = .fullScreen
@@ -126,13 +162,17 @@ final class LoginVC: UIViewController {
         }
     }
     
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
+    @objc private func resetPasswordTapped() {
+        let vc = PasswordResetVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func signupTapped() {
-        let vc = SignupVC()
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(SignupVC(), animated: true)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     private func showAlert(title: String, message: String) {

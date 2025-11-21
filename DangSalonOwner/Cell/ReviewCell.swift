@@ -22,7 +22,19 @@ final class ReviewCell: UITableViewCell {
     private let replyTextView = UITextView()
     private let saveButton = UIButton(type: .system)
     
+    // 🔥 추가된 Action
     var replyHandler: ((String) -> Void)?
+    var reportHandler: (() -> Void)?    // ← 신고용
+    
+    // 🔥 신고 버튼
+    private let reportButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("신고", for: .normal)
+        btn.setTitleColor(.systemRed, for: .normal)
+        btn.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        return btn
+    }()
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -37,24 +49,17 @@ final class ReviewCell: UITableViewCell {
         container.backgroundColor = .white
         container.layer.cornerRadius = 12
         
-        // 닉네임
         nameLabel.font = .boldSystemFont(ofSize: 16)
-        
-        // 별점
         ratingLabel.font = .systemFont(ofSize: 14)
         ratingLabel.textColor = .systemYellow
         
-        // 리뷰 내용
         reviewText.font = .systemFont(ofSize: 15)
         reviewText.numberOfLines = 0
         
-        // ⭐ 이미지 ScrollView 설정
         imageScrollView.showsHorizontalScrollIndicator = false
         
-        // 사장님 답글
         replyTitleLabel.text = "사장님 답글"
         replyTitleLabel.font = .boldSystemFont(ofSize: 15)
-        replyTitleLabel.textColor = .label
         
         replyBackground.backgroundColor = UIColor.systemGray6
         replyBackground.layer.cornerRadius = 10
@@ -63,7 +68,6 @@ final class ReviewCell: UITableViewCell {
         replyTextView.backgroundColor = .clear
         replyTextView.isScrollEnabled = false
         replyTextView.textContainerInset = UIEdgeInsets(top: 10, left: 8, bottom: 10, right: 8)
-        
         replyTextView.text = "답글을 입력해주세요."
         replyTextView.textColor = .systemGray3
         replyTextView.delegate = self
@@ -72,16 +76,21 @@ final class ReviewCell: UITableViewCell {
         saveButton.titleLabel?.font = .boldSystemFont(ofSize: 15)
         saveButton.addTarget(self, action: #selector(saveReply), for: .touchUpInside)
         
+        // 신고 버튼 액션
+        reportButton.addTarget(self, action: #selector(reportTapped), for: .touchUpInside)
+        
+        
         contentView.addSubview(container)
         [
-            nameLabel, ratingLabel, reviewText,
-            imageScrollView, replyTitleLabel,
-            replyBackground, saveButton
+            nameLabel, ratingLabel,
+            reportButton,                // ← 🔥 신고 버튼 추가
+            reviewText, imageScrollView,
+            replyTitleLabel, replyBackground, saveButton
         ].forEach { container.addSubview($0) }
         
         replyBackground.addSubview(replyTextView)
         
-        // MARK: - Layout
+        // Layout
         container.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(12)
         }
@@ -95,6 +104,12 @@ final class ReviewCell: UITableViewCell {
             $0.centerY.equalTo(nameLabel)
         }
         
+        // 🔥 신고 버튼 오른쪽 상단
+        reportButton.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(12)
+            $0.trailing.equalToSuperview().inset(16)
+        }
+        
         reviewText.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(16)
@@ -103,7 +118,7 @@ final class ReviewCell: UITableViewCell {
         imageScrollView.snp.makeConstraints {
             $0.top.equalTo(reviewText.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(16)
-            $0.height.equalTo(80)   // 썸네일 높이
+            $0.height.equalTo(80)
         }
         
         replyTitleLabel.snp.makeConstraints {
@@ -134,10 +149,8 @@ final class ReviewCell: UITableViewCell {
         ratingLabel.text = "⭐️ \(review.rating)"
         reviewText.text = review.content
         
-        // ⭐ 리뷰 이미지 표시
         loadImages(urls: review.imageURLs)
         
-        // 답글 표시
         if let reply = review.reply, !reply.isEmpty {
             replyTextView.text = reply
             replyTextView.textColor = .label
@@ -164,20 +177,16 @@ final class ReviewCell: UITableViewCell {
             iv.clipsToBounds = true
             iv.contentMode = .scaleAspectFill
             
-            // 이미지 로드
             if let url = URL(string: urlString) {
                 URLSession.shared.dataTask(with: url) { data, _, _ in
                     if let data = data, let img = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            iv.image = img
-                        }
+                        DispatchQueue.main.async { iv.image = img }
                     }
                 }.resume()
             }
             
             imageScrollView.addSubview(iv)
             imageViews.append(iv)
-            
             x += 90
         }
         
@@ -188,6 +197,11 @@ final class ReviewCell: UITableViewCell {
         let text = replyTextView.text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty, text != "답글을 입력해주세요." else { return }
         replyHandler?(text)
+    }
+    
+    // 🔥 신고 버튼 탭
+    @objc private func reportTapped() {
+        reportHandler?()
     }
 }
 
