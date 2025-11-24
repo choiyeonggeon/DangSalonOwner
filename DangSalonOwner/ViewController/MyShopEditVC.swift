@@ -99,18 +99,30 @@ final class MyShopEditVC: UIViewController {
     private func setupLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
+        
         [imageView, nameField, addressField, phoneField,
          descView, ownerNameField, businessNumberField,
          workingDaysField, saveButton].forEach { contentView.addSubview($0) }
         
-        scrollView.snp.makeConstraints { $0.edges.equalToSuperview() }
-        contentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-            $0.width.equalTo(scrollView.snp.width)
+        // scrollView frame 제약
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
+        // contentView는 contentLayoutGuide 에 맞춘다.
+        contentView.snp.makeConstraints {
+            // contentLayoutGuide의 edges에 맞춘다 (중요)
+            $0.top.equalTo(scrollView.contentLayoutGuide.snp.top)
+            $0.leading.equalTo(scrollView.contentLayoutGuide.snp.leading)
+            $0.trailing.equalTo(scrollView.contentLayoutGuide.snp.trailing)
+            $0.bottom.equalTo(scrollView.contentLayoutGuide.snp.bottom)
+            // width는 frameLayoutGuide의 width와 같게 해야 가로 스크롤이 생기지 않는다
+            $0.width.equalTo(scrollView.frameLayoutGuide.snp.width)
+        }
+        
+        // 이제 contentView 내부의 서브뷰 제약 (contentView 기준)
         imageView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(24)
+            $0.top.equalTo(contentView.snp.top).offset(24)
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(140)
         }
@@ -160,7 +172,8 @@ final class MyShopEditVC: UIViewController {
             $0.top.equalTo(workingDaysField.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(200)
-            $0.bottom.equalToSuperview().inset(40)
+            // contentView의 하단에 붙여서 contentSize가 하단까지 포함되게 함
+            $0.bottom.equalTo(contentView.snp.bottom).inset(40)
         }
     }
     

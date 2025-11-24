@@ -24,6 +24,12 @@ final class OwnerProfileVC: UIViewController {
         super.viewDidLoad()
         title = "내 정보"
         view.backgroundColor = .systemGroupedBackground
+        
+        guard Auth.auth().currentUser != nil else {
+            showLoginRequiredView()
+            return
+        }
+        
         setupUI()
         fetchUserInfo()
     }
@@ -121,6 +127,20 @@ final class OwnerProfileVC: UIViewController {
                 self.emailLabel.text = "이메일: \(data["email"] as? String ?? "-")"
                 self.phoneLabel.text = "전화번호: \(data["phone"] as? String ?? "-")"
             }
+        }
+    }
+    
+    private func showLoginRequiredView() {
+        let label = UILabel()
+        label.text = "로그인이 필요합니다"
+        label.font = .boldSystemFont(ofSize: 20)
+        label.textColor = .darkGray
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        
+        view.addSubview(label)
+        label.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
     

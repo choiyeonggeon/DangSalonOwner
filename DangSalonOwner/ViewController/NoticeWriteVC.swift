@@ -44,6 +44,10 @@ final class NoticeWriteVC: UIViewController {
         
         setupLayout()
         submitButton.addTarget(self, action: #selector(submitNotice), for: .touchUpInside)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
     
     private func setupLayout() {
@@ -101,5 +105,9 @@ final class NoticeWriteVC: UIViewController {
         let ac = UIAlertController(title: nil, message: msg, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "확인", style: .default, handler: { _ in completion?() }))
         present(ac, animated: true)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

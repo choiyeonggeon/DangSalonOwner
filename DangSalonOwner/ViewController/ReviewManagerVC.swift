@@ -150,7 +150,18 @@ extension ReviewManagerVC: UITableViewDataSource, UITableViewDelegate {
                     print("신고 저장 실패:", err.localizedDescription)
                 } else {
                     print("리뷰 신고 저장 완료")
+                    self.showReportCompletedAlert()   // 🔥 추가된 코드
                 }
             }
+    }
+    
+    private func showReportCompletedAlert() {
+        let alert = UIAlertController(
+            title: "신고 완료",
+            message: "신고가 정상적으로 접수되었습니다.\n관리자가 24시간 이내에 확인 후 처리 예정입니다.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
     }
 }

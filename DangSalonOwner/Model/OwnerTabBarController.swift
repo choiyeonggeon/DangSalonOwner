@@ -34,14 +34,13 @@ final class OwnerTabBarController: UITabBarController {
             let data = snapshot?.data() ?? [:]
             
             let role = data["role"] as? String ?? "owner"
-            let shopId = data["shopId"] as? String   // ⭐ 여기서 바로 가져옴
+            let shopId = data["shopId"] as? String
             
             DispatchQueue.main.async {
                 self.setupTabs(role: role, shopId: shopId)
             }
         }
     }
-    
     
     // MARK: - 2) 탭 구성
     private func setupTabs(role: String, shopId: String?) {
@@ -54,44 +53,34 @@ final class OwnerTabBarController: UITabBarController {
         let reservationVC = UINavigationController(rootViewController: ReservationListVC())
         reservationVC.tabBarItem = UITabBarItem(title: "예약", image: UIImage(systemName: "calendar"), tag: 1)
         
-        
-        // 🔥 매장 보기 탭
+        // 매장 보기 탭
         let shopVC: UINavigationController
-        
         if let shopId = shopId {
-            // 매장 있음 → MyShopVC로 이동
             shopVC = UINavigationController(rootViewController: MyShopVC(shopId: shopId))
         } else {
-            // 매장 없음 → 안내 화면
             shopVC = UINavigationController(rootViewController: NoShopVC())
         }
-        
         shopVC.tabBarItem = UITabBarItem(title: "매장", image: UIImage(systemName: "building.2"), tag: 2)
-        
         
         // 설정
         let settingVC = UINavigationController(rootViewController: OwnerSettingVC())
         settingVC.tabBarItem = UITabBarItem(title: "설정", image: UIImage(systemName: "gearshape"), tag: 3)
         
+        // 기본 탭
+        var controllers: [UIViewController] = [homeVC, reservationVC, shopVC, settingVC]
         
-        //        // 🔥 관리자(admin) 계정이면 추가 탭 표시
-        //        if role == "admin" {
-        //            let adminVC = UINavigationController(rootViewController: AdminVC())
-        //            adminVC.tabBarItem = UITabBarItem(title: "관리자",
-        //                                              image: UIImage(systemName: "checkmark.seal"),
-        //                                              tag: 4)
-        //
-        //            viewControllers = [homeVC, reservationVC, shopVC, settingVC, adminVC]
-        //        } else {
-        //            // 일반 사장님
-        //            viewControllers = [homeVC, reservationVC, shopVC, settingVC]
-        //        }
+        // 🔥 admin 계정이면 AdminVC 추가
+        if role == "admin" {
+            let adminVC = UINavigationController(rootViewController: AdminVC())
+            adminVC.tabBarItem = UITabBarItem(title: "관리자",
+                                              image: UIImage(systemName: "checkmark.seal"),
+                                              tag: 4)
+            controllers.append(adminVC)
+        }
         
-        viewControllers = [homeVC, reservationVC, shopVC, settingVC]
-        
+        viewControllers = controllers
     }
 }
-
 
 // MARK: - 매장 없음 안내 VC
 final class NoShopVC: UIViewController {

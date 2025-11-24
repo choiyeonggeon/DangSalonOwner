@@ -38,11 +38,42 @@ final class ReservationDetailVC: UIViewController {
     private let menuLabel = UILabel()
     private let dateLabel = UILabel()
     private let priceLabel = UILabel()
-    private let requestLabel = UILabel()     // ⭐ 요청사항 추가
+    private let requestLabel = UILabel()
     
     private let statusLabel = UILabel()
     private let statusSegment = UISegmentedControl(items: ["예약 요청", "확정", "완료", "취소"])
     private let saveButton = UIButton(type: .system)
+    
+    // MARK: - ⭐ 추가된 UI (반려견 정보 + 고객 메모)
+    private let petTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "반려견 정보"
+        label.font = .boldSystemFont(ofSize: 18)
+        return label
+    }()
+    
+    private let petInfoLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 15)
+        label.textColor = .darkGray
+        return label
+    }()
+    
+    private let memoTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "고객 메모"
+        label.font = .boldSystemFont(ofSize: 18)
+        return label
+    }()
+    
+    private let memoLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 15)
+        label.textColor = .darkGray
+        return label
+    }()
     
     private let db = Firestore.firestore()
     private var reservation: Reservation
@@ -67,9 +98,12 @@ final class ReservationDetailVC: UIViewController {
     private func setupUI() {
         
         view.addSubview(cardView)
-        [nameLabel, menuLabel, dateLabel, priceLabel, requestLabel,
-         statusLabel, statusSegment, saveButton]
-            .forEach { cardView.addSubview($0) }
+        [
+            nameLabel, menuLabel, dateLabel, priceLabel, requestLabel,
+            petTitleLabel, petInfoLabel,
+            memoTitleLabel, memoLabel,
+            statusLabel, statusSegment, saveButton
+        ].forEach { cardView.addSubview($0) }
         
         setupIconButtons()
         
@@ -86,7 +120,7 @@ final class ReservationDetailVC: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
-        // Label 스타일
+        // 기본 Label 스타일
         [nameLabel, menuLabel, dateLabel, priceLabel, requestLabel, statusLabel]
             .forEach {
                 $0.font = .systemFont(ofSize: 16)
@@ -94,7 +128,6 @@ final class ReservationDetailVC: UIViewController {
             }
         nameLabel.font = .boldSystemFont(ofSize: 18)
         
-        // 요청사항 Label
         requestLabel.numberOfLines = 0
         
         statusSegment.backgroundColor = .systemGray6
@@ -108,22 +141,19 @@ final class ReservationDetailVC: UIViewController {
         saveButton.titleLabel?.font = .boldSystemFont(ofSize: 17)
         saveButton.addTarget(self, action: #selector(updateStatus), for: .touchUpInside)
         
-        // MARK: - 카드뷰 내부 제약
+        // MARK: - 카드뷰 내부 레이아웃
         nameLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(24)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
-        
         menuLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
-        
         dateLabel.snp.makeConstraints {
             $0.top.equalTo(menuLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
-        
         priceLabel.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom).offset(14)
             $0.leading.trailing.equalToSuperview().inset(20)
@@ -133,8 +163,28 @@ final class ReservationDetailVC: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
+        // MARK: 🔥 반려견 정보 섹션
+        petTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(requestLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        petInfoLabel.snp.makeConstraints {
+            $0.top.equalTo(petTitleLabel.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        // MARK: 🔥 고객 메모
+        memoTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(petInfoLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        memoLabel.snp.makeConstraints {
+            $0.top.equalTo(memoTitleLabel.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+        
         statusLabel.snp.makeConstraints {
-            $0.top.equalTo(requestLabel.snp.bottom).offset(14)
+            $0.top.equalTo(memoLabel.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -152,7 +202,7 @@ final class ReservationDetailVC: UIViewController {
         }
     }
     
-    // MARK: - 카드뷰 아래 아이콘 버튼
+    // MARK: - 아이콘 버튼
     private func setupIconButtons() {
         
         let iconStack = UIStackView(arrangedSubviews: [
@@ -167,7 +217,6 @@ final class ReservationDetailVC: UIViewController {
         
         view.addSubview(iconStack)
         
-        // 버튼 스타일
         [callIconButton, reportIconButton].forEach {
             $0.layer.cornerRadius = 14
             $0.backgroundColor = UIColor.systemGray6
@@ -181,7 +230,6 @@ final class ReservationDetailVC: UIViewController {
             $0.height.equalTo(30)
         }
         
-        // 액션 연결
         callIconButton.addTarget(self, action: #selector(callShop), for: .touchUpInside)
         reportIconButton.addTarget(self, action: #selector(reportReservation), for: .touchUpInside)
     }
@@ -225,7 +273,6 @@ final class ReservationDetailVC: UIViewController {
         
         priceLabel.text = "결제 금액: \(NumberFormatter.localizedString(from: NSNumber(value: reservation.totalPrice), number: .decimal))원"
         
-        // ⭐ 요청사항 표시
         requestLabel.text = reservation.request.isEmpty
         ? "요청사항: 없음"
         : "요청사항: \(reservation.request)"
@@ -245,6 +292,77 @@ final class ReservationDetailVC: UIViewController {
             saveButton.isEnabled = false
             saveButton.backgroundColor = .systemGray4
         }
+        
+        // ⭐ 반려견 정보 & 메모 불러오기
+        fillPetInfo()
+        fillUserMemo()
+    }
+    
+    // MARK: - 반려견 정보 불러오기
+    private func fillPetInfo() {
+        let uid = reservation.userId
+        
+        db.collection("users").document(uid).collection("pets")
+            .getDocuments { snap, error in
+                
+                if let error = error {
+                    self.petInfoLabel.text = "반려견 정보를 불러오지 못했습니다.\n\(error.localizedDescription)"
+                    return
+                }
+                
+                guard let docs = snap?.documents, !docs.isEmpty else {
+                    self.petInfoLabel.text = "등록된 반려견 정보가 없습니다."
+                    return
+                }
+                
+                var text = ""
+                for doc in docs {
+                    let d = doc.data()
+                    let name = d["name"] as? String ?? "이름 없음"
+                    let breed = d["breed"] as? String ?? "종 없음"
+                    
+                    // age와 weight를 Firestore 타입에 맞게 Int / Double 변환
+                    let age: Int? = {
+                        if let a = d["age"] as? Int { return a }
+                        if let aStr = d["age"] as? String, let a = Int(aStr) { return a }
+                        return nil
+                    }()
+                    
+                    let weight: Double? = {
+                        if let w = d["weight"] as? Double { return w }
+                        if let wStr = d["weight"] as? String, let w = Double(wStr) { return w }
+                        return nil
+                    }()
+                    
+                    let ageText = age != nil ? "\(age!)세" : "나이 정보 없음"
+                    let weightText = weight != nil ? "\(weight!)kg" : "체중 정보 없음"
+                    
+                    text += """
+                    • \(name) (\(breed))
+                      나이: \(ageText) / \(weightText)
+                    
+                    """
+                }
+                
+                self.petInfoLabel.text = text
+            }
+    }
+    
+    // MARK: - 고객 메모
+    private func fillUserMemo() {
+        let uid = reservation.userId
+        
+        db.collection("users").document(uid)
+            .getDocument { snap, error in
+                
+                if let error = error {
+                    self.memoLabel.text = "메모 불러오기 오류: \(error.localizedDescription)"
+                    return
+                }
+                
+                let memo = snap?.data()?["note"] as? String ?? ""
+                self.memoLabel.text = memo.isEmpty ? "메모 없음" : memo
+            }
     }
     
     // MARK: - 상태 업데이트
