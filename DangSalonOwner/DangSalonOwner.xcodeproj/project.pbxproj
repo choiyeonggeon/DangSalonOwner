@@ -13,6 +13,9 @@
 		42259ABE2EC6ECD7001C0190 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 42259ABD2EC6ECD7001C0190 /* FirebaseMessaging */; };
 		42259AC02EC6ECD7001C0190 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 42259ABF2EC6ECD7001C0190 /* FirebaseStorage */; };
 		42259AC32EC6ED09001C0190 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 42259AC22EC6ED09001C0190 /* SnapKit */; };
+		42C84DC22ED5938900BE1317 /* CustomerInquiryDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C84DC12ED5938900BE1317 /* CustomerInquiryDetailVC.swift */; };
+		42C84E2D2ED5BD7D00BE1317 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C84E2C2ED5BD7D00BE1317 /* FirestoreManager.swift */; };
+		42C84E332ED5CC1B00BE1317 /* InquiryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42C84E322ED5CC1B00BE1317 /* InquiryCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,9 @@
 		423B5B8C2EB8CE2400EB5A47 /* DangSalonOwner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DangSalonOwner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		423B5BA22EB8CE2500EB5A47 /* DangSalonOwnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DangSalonOwnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		423B5BAC2EB8CE2500EB5A47 /* DangSalonOwnerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DangSalonOwnerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42C84DC12ED5938900BE1317 /* CustomerInquiryDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerInquiryDetailVC.swift; sourceTree = "<group>"; };
+		42C84E2C2ED5BD7D00BE1317 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		42C84E322ED5CC1B00BE1317 /* InquiryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -109,6 +115,9 @@
 		423B5B832EB8CE2400EB5A47 = {
 			isa = PBXGroup;
 			children = (
+				42C84E322ED5CC1B00BE1317 /* InquiryCell.swift */,
+				42C84E2C2ED5BD7D00BE1317 /* FirestoreManager.swift */,
+				42C84DC12ED5938900BE1317 /* CustomerInquiryDetailVC.swift */,
 				42D6B4642ED09086005579C0 /* ViewModel */,
 				421334D12EBF8F4E00E3F108 /* Cell */,
 				423B5C7E2EBB482500EB5A47 /* Model */,
@@ -279,6 +288,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42C84E332ED5CC1B00BE1317 /* InquiryCell.swift in Sources */,
+				42C84DC22ED5938900BE1317 /* CustomerInquiryDetailVC.swift in Sources */,
+				42C84E2D2ED5BD7D00BE1317 /* FirestoreManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import FirebaseAuth
 
 final class AdminVC: UIViewController {
     
@@ -86,7 +87,12 @@ extension AdminVC: UITableViewDataSource, UITableViewDelegate {
             navigationController?.pushViewController(AdminApprovedOwnersVC(), animated: true)
             
         case "고객센터(관리자용)":
-            navigationController?.pushViewController(AdminCustomerServiceListVC(), animated: true)
+            if let adminId = Auth.auth().currentUser?.uid {
+                let vc =  CustomerInquiryDetailVC(inquiryId: adminId)
+                navigationController?.pushViewController(vc, animated: true)
+            } else {
+                print("❌ 관리자 UID 없음")
+            }
             
         default: break
         }
