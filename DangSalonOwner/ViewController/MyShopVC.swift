@@ -57,6 +57,16 @@ final class MyShopVC: UIViewController {
         return btn
     }()
     
+    private let disableTimeButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("예약 시간 비활성화", for: .normal)
+        btn.backgroundColor = .systemRed
+        btn.setTitleColor(.white, for: .normal)
+        btn.titleLabel?.font = .boldSystemFont(ofSize: 17)
+        btn.layer.cornerRadius = 12
+        return btn
+    }()
+    
     private let nameLabel = UILabel()
     private let descLabel = UILabel()
     private let addressLabel = UILabel()
@@ -170,7 +180,7 @@ final class MyShopVC: UIViewController {
         }
         
         // 버튼 2개: 가로 정렬 (iPad/Mac) / 세로 정렬(iPhone)
-        let buttonStack = UIStackView(arrangedSubviews: [editButton, reviewButton])
+        let buttonStack = UIStackView(arrangedSubviews: [editButton, reviewButton, disableTimeButton])
         buttonStack.axis = isWide ? .horizontal : .vertical
         buttonStack.spacing = 14
         buttonStack.distribution = .fillEqually
@@ -188,7 +198,7 @@ final class MyShopVC: UIViewController {
                 $0.height.equalTo(50)
             } else {
                 // iPhone → 버튼 개수 * 50 높이
-                $0.height.equalTo(50 * 2 + 14)   // 버튼 2개 + 간격 14
+                $0.height.equalTo(50 * 3 + 14 * 2)   // 버튼 2개 + 간격 14
             }
             
             $0.bottom.equalToSuperview().inset(24)
@@ -197,6 +207,7 @@ final class MyShopVC: UIViewController {
         // Button action
         editButton.addTarget(self, action: #selector(editTapped), for: .touchUpInside)
         reviewButton.addTarget(self, action: #selector(openReviewManager), for: .touchUpInside)
+        disableTimeButton.addTarget(self, action: #selector(openDisableTimeVC), for: .touchUpInside)
     }
     
     
@@ -235,6 +246,11 @@ final class MyShopVC: UIViewController {
     
     @objc private func openReviewManager() {
         let vc = ReviewManagerVC(shopId: shopId)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc private func openDisableTimeVC() {
+        let vc = OwnerTimeDisableVC(shopId: shopId)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
