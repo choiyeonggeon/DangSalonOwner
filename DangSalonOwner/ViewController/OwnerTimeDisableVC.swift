@@ -40,7 +40,7 @@ final class OwnerTimeDisableVC: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "예약 시간 비활성화"
+        title = "스케줄 관리"
         view.backgroundColor = .systemBackground
         
         setupLayout()

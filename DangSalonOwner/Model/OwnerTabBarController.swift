@@ -62,19 +62,36 @@ final class OwnerTabBarController: UITabBarController {
         }
         shopVC.tabBarItem = UITabBarItem(title: "매장", image: UIImage(systemName: "building.2"), tag: 2)
         
+        
+        // ⚡⚡⚡ [추가됨] 휴무 관리 탭 ⚡⚡⚡
+        var closedVC: UINavigationController?
+        if let shopId = shopId {
+            closedVC = UINavigationController(rootViewController: OwnerClosedDayVC(shopId: shopId))
+            closedVC?.tabBarItem = UITabBarItem(title: "휴무", image: UIImage(systemName: "xmark.circle"), tag: 3)
+        }
+        
+        
         // 설정
         let settingVC = UINavigationController(rootViewController: OwnerSettingVC())
-        settingVC.tabBarItem = UITabBarItem(title: "설정", image: UIImage(systemName: "gearshape"), tag: 3)
+        settingVC.tabBarItem = UITabBarItem(title: "설정", image: UIImage(systemName: "gearshape"), tag: 4)
         
-        // 기본 탭
-        var controllers: [UIViewController] = [homeVC, reservationVC, shopVC, settingVC]
+        // 기본 탭 배열
+        var controllers: [UIViewController] = [homeVC, reservationVC, shopVC]
         
-        // 🔥 admin 계정이면 AdminVC 추가
+        // ⚡ 휴무 탭 shopId 있을 때만 추가
+        if let closed = closedVC {
+            controllers.append(closed)
+        }
+        
+        controllers.append(settingVC)
+        
+        
+        // admin 탭
         if role == "admin" {
             let adminVC = UINavigationController(rootViewController: AdminVC())
             adminVC.tabBarItem = UITabBarItem(title: "관리자",
                                               image: UIImage(systemName: "checkmark.seal"),
-                                              tag: 4)
+                                              tag: 5)
             controllers.append(adminVC)
         }
         
